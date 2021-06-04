@@ -1,26 +1,24 @@
-apiVersion: apps/v1
-kind: Deployment
+---
+apiVersion: "apps/v1"
+kind: "Deployment"
 metadata:
-name: hello-jenkins
-labels:
-  app: hello-jenkins
+  name: "hello-jenkins"
+  namespace: "default"
+  labels:
+    app: "hello-jenkins"
 spec:
-strategy:
-  type: Recreate
-template:
-  metadata:
-    labels:
-      app: hello-jenkins
-      tier: hello-jenkins
-  spec:
-    containers:
-    - name: hello
-      image: bryantplaudo/hello:latest
-      imagePullPolicy: Always
-      ports:
-      - containerPort: 80
-        name: hello-jenkins
-
+  replicas: 1
+  selector:
+    matchLabels:
+      app: "hello-jenkins"
+  template:
+    metadata:
+      labels:
+        app: "hello-jenkins"
+    spec:
+      containers:
+      - name: "hello-jenkins"
+        image: "bryantplaudo/hello:latest"
 ---
 apiVersion: v1
 kind: Service
