@@ -1,0 +1,12 @@
+# API key validationlocation = /_validate_apikey {
+        internal;
+
+        if ($http_apikey = "") {
+            return 401; # Unauthorized
+        }
+        if ($api_client_name = "") {
+            return 403; # Forbidden
+        }
+
+        return 204; # OK (no content)
+    }
