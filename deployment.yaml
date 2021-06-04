@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+name: hello-jenkins
+labels:
+  app: hello-jenkins
+spec:
+strategy:
+  type: Recreate
+template:
+  metadata:
+    labels:
+      app: hello-jenkins
+      tier: hello-jenkins
+  spec:
+    containers:
+    - name: hello
+      image: bryantplaudo/hello:latest
+      imagePullPolicy: Always
+      ports:
+      - containerPort: 80
+        name: hello-jenkins
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ilb-service
+  annotations:
+    networking.gke.io/load-balancer-type: "Internal"
+  labels:
+    app: hello-jenkins
+spec:
+  type: LoadBalancer
+  selector:
+    app: hello-jenkins
+  ports:
+  - port: 80
+    targetPort: 5000
+    protocol: TCP
